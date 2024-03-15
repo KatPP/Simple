@@ -1,70 +1,52 @@
-CREATE TABLE roles (
-                       role_id SERIAL PRIMARY KEY,
-                       role_name VARCHAR(50) NOT NULL
-);
-
-
 CREATE TABLE users (
-                       user_id SERIAL PRIMARY KEY,
-                       username VARCHAR(50) NOT NULL,
-                       role_id INT,
-                       FOREIGN KEY (role_id) REFERENCES roles(role_id)
+                       user_id INT PRIMARY KEY,
+                       username VARCHAR(50),
+                       role_id INT
 );
 
+CREATE TABLE roles (
+                       role_id INT PRIMARY KEY,
+                       role_name VARCHAR(50)
+);
 
 CREATE TABLE rules (
-                       role_id INT,
-                       rule_name VARCHAR(50),
-                       PRIMARY KEY (role_id, rule_name),
-                       FOREIGN KEY (role_id) REFERENCES roles(role_id)
+                       rule_id INT PRIMARY KEY,
+                       rule_name VARCHAR(50)
 );
 
-CREATE TABLE categories (
-                            category_id SERIAL PRIMARY KEY,
-                            category_name VARCHAR(50) NOT NULL
+CREATE TABLE roles_rules (
+                             role_id INT,
+                             rule_id INT,
+                             PRIMARY KEY (role_id, rule_id),
+                             FOREIGN KEY (role_id) REFERENCES roles(role_id),
+                             FOREIGN KEY (rule_id) REFERENCES rules(rule_id)
 );
-
-CREATE TABLE states (
-                        state_id SERIAL PRIMARY KEY,
-                        state_name VARCHAR(50) NOT NULL
-);
-
-
 
 CREATE TABLE items (
-                       item_id SERIAL PRIMARY KEY,
+                       item_id INT PRIMARY KEY,
                        user_id INT,
                        category_id INT,
-                       state_id INT,
-                       item_name VARCHAR(100) NOT NULL,
-                       FOREIGN KEY (user_id) REFERENCES users(user_id),
-                       FOREIGN KEY (category_id) REFERENCES categories(category_id),
-                       FOREIGN KEY (state_id) REFERENCES states(state_id)
+                       state_id INT
 );
 
 CREATE TABLE comments (
-                          comment_id SERIAL PRIMARY KEY,
+                          comment_id INT PRIMARY KEY,
                           item_id INT,
-                          user_id INT,
-                          comment_text TEXT NOT NULL,
-                          FOREIGN KEY (item_id) REFERENCES items(item_id),
-                          FOREIGN KEY (user_id) REFERENCES users(user_id)
+                          comment_text TEXT
 );
 
 CREATE TABLE attachs (
-                         attach_id SERIAL PRIMARY KEY,
+                         attach_id INT PRIMARY KEY,
                          item_id INT,
-                         attach_name VARCHAR(100) NOT NULL,
-                         FOREIGN KEY (item_id) REFERENCES items(item_id)
+                         file_name VARCHAR(100)
 );
 
+CREATE TABLE states (
+                        state_id INT PRIMARY KEY,
+                        state_name VARCHAR(50)
+);
 
-
-
-CREATE TABLE item_category (
-                               item_id INT,
-                               category_id INT,
-                               PRIMARY KEY (item_id, category_id),
-                               FOREIGN KEY (item_id) REFERENCES items(item_id),
-                               FOREIGN KEY (category_id) REFERENCES categories(category_id)
+CREATE TABLE categories (
+                            category_id INT PRIMARY KEY,
+                            category_name VARCHAR(50)
 );
